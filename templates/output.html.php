@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Form Example</title>
+		<title>Script Output</title>
 	</head>
 	<body>
 		<p>
