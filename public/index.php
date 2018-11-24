@@ -4,14 +4,16 @@ try {
     $pdo = new PDO('mysql:host=localhost;dbname=ijdb;charset=utf8', 'ijdb', 'ijdb');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = 'UPDATE joke SET jokedate="2012-04-01" WHERE joketext LIKE "%programmer%"';
+    $sql = 'SELECT `joketext` FROM `joke`';
 
-    $affectedRows = $pdo->exec($sql);
+    $result = $pdo->query($sql);
 
-    $output = 'Updated ' . $affectedRows . ' rows.';
+    while($row = $result->fetch()) {
+        $jokes[] = $row['joketext'];
+    }
 } catch (PDOException $e) {
-    $output = sprintf(
-        'Database error: %s in %s:%s',
+    $error = sprintf(
+        'Unable to connect to the database server: %s in %s:%s',
         $e->getMessage(),
         $e->getFile(),
         $e->getLine()
