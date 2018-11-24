@@ -4,15 +4,11 @@ try {
     $pdo = new PDO('mysql:host=localhost;dbname=ijdb;charset=utf8', 'ijdb', 'ijdb');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = 'CREATE TABLE joke (
-        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        joketext TEXT,
-        jokedate DATE NOT NULL
-    ) DEFAULT CHARACTER SET utf8 ENGINE=InnoDB';
+    $sql = 'UPDATE joke SET jokedate="2012-04-01" WHERE joketext LIKE "%programmer%"';
 
-    $pdo->exec($sql);
+    $affectedRows = $pdo->exec($sql);
 
-    $output = 'Joke table successfully created.';
+    $output = 'Updated ' . $affectedRows . ' rows.';
 } catch (PDOException $e) {
     $output = sprintf(
         'Database error: %s in %s:%s',
