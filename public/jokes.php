@@ -5,19 +5,31 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $sql = 'SELECT `joketext` FROM `joke`';
-
     $result = $pdo->query($sql);
 
     while($row = $result->fetch()) {
         $jokes[] = $row['joketext'];
     }
+
+    $title = 'Joke list';
+
+    $output = '';
+
+    foreach ($jokes as $joke ) {
+        $output .= '<blockquote>';
+        $output .= '<p>';
+        $output .= $joke;
+        $output .= '</p>';
+        $output .= '</blockquote>';
+    }
 } catch (PDOException $e) {
-    $error = sprintf(
-        'Unable to connect to the database server: %s in %s:%s',
+    $title = 'An error has ocurred';
+
+    $output = sprintf('Database error: %s in %s:%s',
         $e->getMessage(),
         $e->getFile(),
         $e->getLine()
     );
 }
 
-include __DIR__ . '/../templates/output.html.php';
+include __DIR__ . '/../templates/layout.html.php';
