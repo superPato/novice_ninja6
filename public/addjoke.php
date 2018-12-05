@@ -6,7 +6,7 @@ if (isset($_POST['joketext'])) {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = 'INSERT INTO `joke` SET 
-            `joketext` = :joketext
+            `joketext` = :joketext,
             `jokedate` = CURDATE()';
 
         // This sends the query to the MySQL server, asking it to prepare 
