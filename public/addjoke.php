@@ -2,22 +2,21 @@
 
 if (isset($_POST['joketext'])) {
     try {
-        $pdo = new PDO('mysql:host=localhost;dbname=ijdb;charset=utf8', 'ijdb', 'ijdb');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        include __DIR__ . '/../includes/DatabaseConnection.php';
 
-        $sql = 'INSERT INTO `joke` SET 
+        $sql = 'INSERT INTO `joke` SET
             `joketext` = :joketext,
             `jokedate` = CURDATE()';
 
-        // This sends the query to the MySQL server, asking it to prepare 
+        // This sends the query to the MySQL server, asking it to prepare
         // to run the query.
         // The prepare method returns a PDOStatement object
         $stmt = $pdo->prepare($sql);
 
         $stmt->bindValue(':joketext', $_POST['joketext']);
-        
+
         $stmt->execute();
-        
+
         header('location: jokes.php');
     } catch (PDOException $e) {
         $title = 'An error has ocurred';
