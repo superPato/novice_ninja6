@@ -3,19 +3,9 @@
 if (isset($_POST['joketext'])) {
     try {
         include __DIR__ . '/../includes/DatabaseConnection.php';
+        include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-        $sql = 'INSERT INTO `joke` SET
-            `joketext` = :joketext,
-            `jokedate` = CURDATE()';
-
-        // This sends the query to the MySQL server, asking it to prepare
-        // to run the query.
-        // The prepare method returns a PDOStatement object
-        $stmt = $pdo->prepare($sql);
-
-        $stmt->bindValue(':joketext', $_POST['joketext']);
-
-        $stmt->execute();
+        insertJoke($pdo, $_POST['joketext'], 1);
 
         header('location: jokes.php');
     } catch (PDOException $e) {

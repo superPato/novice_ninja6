@@ -8,6 +8,9 @@ try {
         FROM `joke` INNER JOIN `author`
             ON `authorid` = `author`.`id`';
 
+    // print_r(getJoke($pdo, 1));
+    // exit();
+
     $jokes = $pdo->query($sql);
 
     $title = 'Joke list';
