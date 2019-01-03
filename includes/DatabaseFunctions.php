@@ -44,3 +44,9 @@ function updateJoke($pdo, $jokeId, $joketext, $authorId)
 	query($pdo, 'UPDATE `joke` SET `authorid` = :authorid, `joketext` = :joketext WHERE `id` = :id', $parameters);
 } 
 
+function deleteJoke($pdo, $id)
+{
+	$parameters = [':id' => $id];
+
+	query($pdo, 'DELETE FROM `joke` WHERE `id` = :id', $parameters);
+}
