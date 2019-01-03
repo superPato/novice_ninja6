@@ -25,6 +25,15 @@ function getJoke($pdo, $id)
 	return $query->fetch();
 }
 
+function allJokes($pdo)
+{
+	$jokes = query($pdo, 'SELECT `joke`.`id`, `joketext`, `name`, `email`
+        				  FROM `joke` INNER JOIN `author`
+            				ON `authorid` = `author`.`id`');
+
+	return $jokes->fetchAll();
+}
+
 function insertJoke($pdo, $joketext, $authorId)
 {
 	$query = 'INSERT INTO `joke` (`joketext`, `jokedate`, `authorid`) 

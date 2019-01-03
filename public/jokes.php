@@ -4,14 +4,7 @@ try {
     include __DIR__ . '/../includes/DatabaseConnection.php';
     include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-    $sql = 'SELECT `joke`.`id`, `joketext`, `name`, `email`
-        FROM `joke` INNER JOIN `author`
-            ON `authorid` = `author`.`id`';
-
-    // print_r(getJoke($pdo, 1));
-    // exit();
-
-    $jokes = $pdo->query($sql);
+    $jokes = allJokes($pdo);
 
     $title = 'Joke list';
 
