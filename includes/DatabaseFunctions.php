@@ -34,23 +34,48 @@ function allJokes($pdo)
 	return $jokes->fetchAll();
 }
 
-function insertJoke($pdo, $joketext, $authorId)
+function insertJoke($pdo, $fields)
 {
-	$query = 'INSERT INTO `joke` (`joketext`, `jokedate`, `authorid`) 
-		VALUES (:joketext, CURDATE(), :authorid)';
-	$parameters = [':joketext' => $joketext, ':authorid' => $authorId];
+	$query = 'INSERT INTO `joke` (';
 
-	query($pdo, $query, $parameters);
+	foreach ($fields as $key => $value) {
+		$query .= '`' . $key . '`,';
+	}
+
+	$query = rtrim($query, ',');
+
+	$query .= ') VALUES (';
+
+	foreach ($fields as $key => $value) {
+		$query .= ':' . $key . ',';
+	}
+
+	$query = rtrim($query, ',');
+
+	$query .= ')';
+
+	query($pdo, $query, $fields);
 }
 
-function updateJoke($pdo, $jokeId, $joketext, $authorId) 
+function updateJoke($pdo, $fields) 
 {
-	$parameters = [
-		':joketext' => $joketext, 
-		':authorid' => $authorId, 
-		':id'	    => $jokeId   
-	];
-	query($pdo, 'UPDATE `joke` SET `authorid` = :authorid, `joketext` = :joketext WHERE `id` = :id', $parameters);
+	$query = 'UPDATE `joke` SET ';
+
+	foreach ($fields as $key => $value) {
+		$query .= '`' . $key . '` = :' . $key . ',';
+	}
+
+	$query = rtrim($query, ',');
+
+	$query .= ' WHERE `id` = :primaryKey';
+
+	// Set the :primaryKey variable
+	$fields['primaryKey'] = $fields['id'];
+
+	print_r($fields);
+	die();
+
+	query($pdo, $query, $fields);
 } 
 
 function deleteJoke($pdo, $id)
