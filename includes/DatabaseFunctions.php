@@ -54,6 +54,8 @@ function insertJoke($pdo, $fields)
 
 	$query .= ')';
 
+	$fields = processDates($fields);
+
 	query($pdo, $query, $fields);
 }
 
@@ -71,9 +73,8 @@ function updateJoke($pdo, $fields)
 
 	// Set the :primaryKey variable
 	$fields['primaryKey'] = $fields['id'];
-
-	print_r($fields);
-	die();
+	
+	$fields = processDates($fields);
 
 	query($pdo, $query, $fields);
 } 
@@ -83,4 +84,15 @@ function deleteJoke($pdo, $id)
 	$parameters = [':id' => $id];
 
 	query($pdo, 'DELETE FROM `joke` WHERE `id` = :id', $parameters);
+}
+
+function processDates($fields)
+{
+	foreach ($fields as $key => $value) {
+		if ($value instanceof DateTime) {
+			$fields[$key] = $value->format('Y-m-d');
+		}
+	}
+
+	return $fields;
 }
