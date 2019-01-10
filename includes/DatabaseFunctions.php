@@ -27,7 +27,7 @@ function getJoke($pdo, $id)
 
 function allJokes($pdo)
 {
-	$jokes = query($pdo, 'SELECT `joke`.`id`, `joketext`, `name`, `email`
+	$jokes = query($pdo, 'SELECT `joke`.`id`, `joketext`, `jokedate`, `name`, `email`
         				  FROM `joke` INNER JOIN `author`
             				ON `authorid` = `author`.`id`');
 
