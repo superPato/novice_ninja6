@@ -5,7 +5,7 @@ include __DIR__ . '/../includes/DatabaseFunctions.php';
 
 try {
 	if (isset($_POST['joketext'])) {
-		updateJoke($pdo, [
+		update($pdo, 'joke', 'id', [
 			'id' => $_POST['jokeid'],
 			'joketext' => $_POST['joketext'],
 			'authorid' => 1
@@ -13,7 +13,7 @@ try {
 
 		header('location: jokes.php');
 	} else {
-		$joke = getJoke($pdo, $_GET['id']);
+		$joke = findById($pdo, 'joke', 'id', $_GET['id']);
 
 		$title = 'Edit joke';
 

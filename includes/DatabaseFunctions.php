@@ -8,35 +8,33 @@ function query($pdo, $sql, $parameters = [])
 	return $query;
 }
 
-function totalJokes($pdo)
+function total($pdo, $table)
 {
-    $query = query($pdo, 'SELECT COUNT(*) FROM `joke`');
+    $query = query($pdo, "SELECT COUNT(*) FROM `{$table}`");
     $row = $query->fetch();
 
     return $row[0];
 }
 
-function getJoke($pdo, $id)
+function findById($pdo, $table, $primaryKey, $value)
 {
-	// Create the array $parameters for use in the query function
-	$parameters = [':id' => $id];
-	$query = query($pdo, 'SELECT * FROM `joke` WHERE `id` = :id', $parameters);
+	$query = "SELECT * FROM `{$table}` WHERE `{$primaryKey}` = :value";
+	$parameters = ['value' => $value];
+	$query = query($pdo, $query, $parameters);
 
 	return $query->fetch();
 }
 
-function allJokes($pdo)
+function findAll($pdo, $table)
 {
-	$jokes = query($pdo, 'SELECT `joke`.`id`, `joketext`, `jokedate`, `name`, `email`
-        				  FROM `joke` INNER JOIN `author`
-            				ON `authorid` = `author`.`id`');
+	$result = query($pdo, "SELECT * FROM `{$table}`");
 
-	return $jokes->fetchAll();
+	return $result->fetchAll();
 }
 
-function insertJoke($pdo, $fields)
+function insert($pdo, $table, $fields)
 {
-	$query = 'INSERT INTO `joke` (';
+	$query = "INSERT INTO `{$table}` (";
 
 	foreach ($fields as $key => $value) {
 		$query .= '`' . $key . '`,';
@@ -59,9 +57,9 @@ function insertJoke($pdo, $fields)
 	query($pdo, $query, $fields);
 }
 
-function updateJoke($pdo, $fields) 
+function update($pdo, $table, $primaryKey, $fields)
 {
-	$query = 'UPDATE `joke` SET ';
+	$query = "UPDATE `{$table}` SET ";
 
 	foreach ($fields as $key => $value) {
 		$query .= '`' . $key . '` = :' . $key . ',';
@@ -69,21 +67,21 @@ function updateJoke($pdo, $fields)
 
 	$query = rtrim($query, ',');
 
-	$query .= ' WHERE `id` = :primaryKey';
+	$query .= " WHERE `{$primaryKey}` = :primaryKey";
 
 	// Set the :primaryKey variable
 	$fields['primaryKey'] = $fields['id'];
-	
+
 	$fields = processDates($fields);
 
 	query($pdo, $query, $fields);
-} 
+}
 
-function deleteJoke($pdo, $id)
+function delete($pdo, $table, $primaryKey, $id)
 {
 	$parameters = [':id' => $id];
 
-	query($pdo, 'DELETE FROM `joke` WHERE `id` = :id', $parameters);
+	query($pdo, "DELETE FROM `{$table}` WHERE `{$primaryKey}` = :id", $parameters);
 }
 
 function processDates($fields)
