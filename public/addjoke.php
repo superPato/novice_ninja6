@@ -5,7 +5,7 @@ if (isset($_POST['joketext'])) {
         include __DIR__ . '/../includes/DatabaseConnection.php';
         include __DIR__ . '/../includes/DatabaseFunctions.php';
 
-        insert($pdo, 'joke', [
+        save($pdo, 'joke', 'id', [
             'authorid' => 1, 
             'joketext' => $_POST['joketext'],
             'jokedate' => new DateTime()
@@ -25,7 +25,7 @@ if (isset($_POST['joketext'])) {
     $title = 'Add a new joke';
 
     ob_start();
-    include __DIR__ . '/../templates/addjoke.html.php';
+    include __DIR__ . '/../templates/editjoke.html.php';
     $output = ob_get_clean();
 }
 

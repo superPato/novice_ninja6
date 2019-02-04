@@ -77,6 +77,18 @@ function update($pdo, $table, $primaryKey, $fields)
 	query($pdo, $query, $fields);
 }
 
+function save($pdo, $table, $primaryKey, $record)
+{
+	try {
+		if ($record[$primaryKey] == '') {
+			$record[$primaryKey] = null;
+		}
+		insert($pdo, $table, $record);
+	} catch (PDOException $e) {
+		update($pdo, $table, $primaryKey, $record);
+	}
+}
+
 function delete($pdo, $table, $primaryKey, $id)
 {
 	$parameters = [':id' => $id];
