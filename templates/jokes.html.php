@@ -12,9 +12,9 @@
             echo $date->format('jS F Y');
         ?>)
 
-        <a href="editjoke.php?id=<?= $joke['id'] ?>">Edit</a>
+        <a href="index.php?edit&id=<?= $joke['id'] ?>">Edit</a>
 
-        <form action="deletejoke.php" method="POST">
+        <form action="index.php?delete" method="POST">
             <input type="hidden" name="id" value="<?= $joke['id'] ?>">
             <input type="submit" value="Delete">
         </form>
