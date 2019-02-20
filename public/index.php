@@ -1,7 +1,6 @@
 <?php
 
 try {
-    
     include __DIR__ . '/../includes/DatabaseConnection.php';
     include __DIR__ . '/../classes/DatabaseTable.php';
     include __DIR__ . '/../classes/controllers/JokeController.php';
@@ -24,9 +23,8 @@ try {
         $page = $jokeController->home();
     }
 
-    $title = $page['title'];
+    $title  = $page['title'];
     $output = $page['output'];
-
 } catch (PDOException $e) {
     $title = 'An error has ocurred';
 
