@@ -7,14 +7,14 @@
 
         (by <a href="mailto:<?php echo htmlspecialchars($joke['email'], ENT_QUOTES, 'UTF-8'); ?>">
             <?php echo htmlspecialchars($joke['name'], ENT_QUOTES, 'UTF-8'); ?>
-        </a> on 
+        </a> on
         <?php $date = new DateTime($joke['jokedate']);
             echo $date->format('jS F Y');
         ?>)
 
-        <a href="index.php?edit&id=<?= $joke['id'] ?>">Edit</a>
+        <a href="index.php?action=edit&id=<?= $joke['id'] ?>">Edit</a>
 
-        <form action="index.php?delete" method="POST">
+        <form action="index.php?action=delete" method="POST">
             <input type="hidden" name="id" value="<?= $joke['id'] ?>">
             <input type="submit" value="Delete">
         </form>

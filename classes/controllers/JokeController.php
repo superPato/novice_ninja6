@@ -5,7 +5,7 @@ class JokeController {
     private $jokesTable;
 
     public function __construct(DatabaseTable $jokesTable,
-                                DatabaseTable $authorsTable) 
+                                DatabaseTable $authorsTable)
     {
         $this->jokesTable = $jokesTable;
         $this->authorsTable = $authorsTable;
@@ -58,7 +58,7 @@ class JokeController {
     {
         $this->jokesTable->delete($_POST['id']);
 
-        header('location: index.php?list');
+        header('location: index.php?action=list');
     }
 
     public function edit()
@@ -67,21 +67,21 @@ class JokeController {
             $joke = $_POST['joke'];
             $joke['authorid'] = 1;
             $joke['jokedate'] = new DateTime();
-    
+
             $this->jokesTable->save($joke);
-    
-            header('location: index.php?list');
+
+            header('location: index.php?action=list');
         } else {
             if (isset($_GET['id'])) {
                 $joke = $this->jokesTable->findById($_GET['id']);
             }
-    
+
             $title = 'Edit joke';
-    
+
             ob_start();
-    
+
             include __DIR__ . '/../../templates/editjoke.html.php';
-    
+
             $output = ob_get_clean();
         }
 
