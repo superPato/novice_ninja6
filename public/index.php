@@ -23,7 +23,12 @@ try {
 
     $action = $_GET['action'] ?? 'home';
 
-    $page = $jokeController->$action();
+    if ($action == strtolower($action)) {
+        $page = $jokeController->$action();
+    } else {
+        http_response_code(301);
+        header('location: index.php?action=' . strtolower($action));
+    }
 
     $title  = $page['title'];
 
