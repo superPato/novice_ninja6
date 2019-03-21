@@ -18,15 +18,17 @@ try {
     $jokesTable = new DatabaseTable($pdo, 'joke', 'id');
     $authorsTable = new DatabaseTable($pdo, 'author', 'id');
 
-    // if no route variables is set, use 'joke/home'
-    $route = $_GET['route'] ?? 'joke/home';
+    // $_SERVER['REQUEST_URI']                          -> /jokes/list?param=value&param2=value
+    // strtok($_SERVER['REQUEST_URI'], '?')             -> /jokes/list
+    // ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/') -> jokes/list
+    $route = ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/');
 
     if ($route == strtolower($route)) {
         if ($route == 'joke/list') {
             include __DIR__ . '/../classes/controllers/JokeController.php';
             $controller = new JokeController($jokesTable, $authorsTable);
             $page = $controller->list();
-        } elseif ($route == 'joke/home') {
+        } elseif ($route == '') {
             include __DIR__ . '/../classes/controllers/JokeController.php';
             $controller = new JokeController($jokesTable, $authorsTable);
             $page = $controller->home();
