@@ -2,10 +2,11 @@
 
 try {
     include __DIR__ . '/../classes/EntryPoint.php';
+    include __DIR__ . '/../classes/IjdbRoutes.php';
 
     $route = ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/');
 
-    $entryPoint = new EntryPoint($route);
+    $entryPoint = new EntryPoint($route, new IjdbRoutes());
     $entryPoint->run();
 } catch (PDOException $e) {
     $title = 'An error has ocurred';
