@@ -1,5 +1,8 @@
 <?php
 
+use Ninja\EntryPoint;
+use Ijdb\IjdbRoutes;
+
 try {
     include __DIR__ . '/../includes/autoload.php';
 
