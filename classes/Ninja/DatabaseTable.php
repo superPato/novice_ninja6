@@ -98,7 +98,7 @@ class DatabaseTable {
 				$record[$this->primaryKey] = null;
 			}
 			$this->insert($record);
-		} catch (PDOException $e) {
+		} catch (\PDOException $e) {
 			$this->update($record);
 		}
 	}
@@ -113,7 +113,7 @@ class DatabaseTable {
 	private function processDates($fields)
 	{
 		foreach ($fields as $key => $value) {
-			if ($value instanceof DateTime) {
+			if ($value instanceof \DateTime) {
 				$fields[$key] = $value->format('Y-m-d');
 			}
 		}
