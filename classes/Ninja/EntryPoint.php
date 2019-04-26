@@ -8,7 +8,7 @@ class EntryPoint
 	private $method;
 	private $routes;
 
-	public function __construct($route,$method, $routes)
+	public function __construct($route,$method, Routes $routes)
 	{
 		$this->route  = $route;
 		$this->routes = $routes;

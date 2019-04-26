@@ -5,7 +5,7 @@ namespace Ijdb;
 use Ninja\DatabaseTable;
 use Ijdb\Controllers\Joke;
 
-class IjdbRoutes 
+class IjdbRoutes implements \Ninja\Routes
 {
 	public function getRoutes()
 	{
