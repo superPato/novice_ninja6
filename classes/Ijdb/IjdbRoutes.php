@@ -4,6 +4,7 @@ namespace Ijdb;
 
 use Ninja\DatabaseTable;
 use Ijdb\Controllers\Joke;
+use Ijdb\Controllers\Register;
 
 class IjdbRoutes implements \Ninja\Routes
 {
@@ -15,8 +16,25 @@ class IjdbRoutes implements \Ninja\Routes
 	    $authorsTable = new DatabaseTable($pdo, 'author', 'id');
 
         $jokeController = new Joke($jokesTable, $authorsTable);
+        $authorController = new Register($authorsTable);
 
         $routes = [
+            'author/register' => [
+                'GET' => [
+                    'controller' => $authorController,
+                    'action'     => 'registrationForm'
+                ],
+                'POST' => [
+                    'controller' => $authorController,
+                    'action'     => 'registerUser'
+                ],
+            ],
+            'author/success' => [
+                'GET' => [
+                    'controller' => $authorController,
+                    'action'     => 'success'
+                ]
+            ],
             'joke/edit' => [
                 'POST' => [
                     'controller' => $jokeController,
