@@ -34,6 +34,14 @@ class Register
 		} elseif (filter_var($author['email'], FILTER_VALIDATE_EMAIL) == false) {
 			$valid = false;
 			$errors[] = 'Invalid email address';
+		} else { // If the eamil is not blank and valid
+			$author['email'] = strtolower($author['email']);
+
+			// Search for the lowercase version fo $author['email']
+			if (count($this->authorsTable->find('email', $author['email'])) > 0) {
+				$valid = 0;
+				$errors[] = 'That email address is already registered.';
+			}
 		}
 
 		if (empty($author['password'])) {
@@ -44,6 +52,9 @@ class Register
 		// If $valid is still true, no fields were blank
 		// and the data can be added
 		if ($valid == true) {
+			// Hash the password before saving in the database
+			$author['password'] = password_hash($author['password'], PASSWORD_DEFAULT);
+			
 			$this->authorsTable->save($author);
 
 			header('Location: /author/success');
