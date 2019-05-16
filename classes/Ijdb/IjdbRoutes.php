@@ -3,20 +3,31 @@
 namespace Ijdb;
 
 use Ninja\DatabaseTable;
+use Ninja\Authentication;
 use Ijdb\Controllers\Joke;
+use Ijdb\Controllers\Login;
 use Ijdb\Controllers\Register;
 
 class IjdbRoutes implements \Ninja\Routes
 {
-	public function getRoutes()
-	{
-		include __DIR__ . '/../../includes/DatabaseConnection.php';
-		
-	    $jokesTable = new DatabaseTable($pdo, 'joke', 'id');
-	    $authorsTable = new DatabaseTable($pdo, 'author', 'id');
+    private $authorsTable;
+    private $jokesTable;
+    private $authentication;
 
-        $jokeController = new Joke($jokesTable, $authorsTable);
-        $authorController = new Register($authorsTable);
+    public function __construct()
+    {
+        include __DIR__ . '/../../includes/DatabaseConnection.php';
+
+        $this->jokesTable     = new DatabaseTable($pdo, 'joke', 'id');
+        $this->authorsTable   = new DatabaseTable($pdo, 'author', 'id');
+        $this->authentication = new Authentication($this->authorsTable, 'email', 'password');
+    }
+
+	public function getRoutes(): array
+	{
+        $jokeController   = new Joke($this->jokesTable, $this->authorsTable);
+        $authorController = new Register($this->authorsTable);
+        $loginController  = new Login();
 
         $routes = [
             'author/register' => [
@@ -43,13 +54,15 @@ class IjdbRoutes implements \Ninja\Routes
                 'GET' => [
                     'controller' => $jokeController,
                     'action'     => 'edit'
-                ]
+                ],
+                'login' => true
             ],
             'joke/delete' => [
                 'POST' => [
                     'controller' => $jokeController,
                     'action'     => 'delete'
-                ]
+                ],
+                'login' => true
             ],
             'joke/list' => [
                 'GET' => [
@@ -62,9 +75,20 @@ class IjdbRoutes implements \Ninja\Routes
                     'controller' => $jokeController,
                     'action'     => 'home'
                 ]
-            ]
+            ],
+            'login/error' => [
+                'GET' => [
+                    'controller' => $loginController,
+                    'action'     => 'error'
+                ]
+            ],
         ];
 
         return $routes;
 	}
+
+    public function getAuthentication(): Authentication
+    {
+        return $this->authentication;
+    }
 }
