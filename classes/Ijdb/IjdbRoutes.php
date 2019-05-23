@@ -86,6 +86,12 @@ class IjdbRoutes implements \Ninja\Routes
                     'action'     => 'processLogin'
                 ]
             ],
+            'logout' => [
+                'GET' => [
+                    'controller' => $loginController,
+                    'action'     => 'logout'
+                ]
+            ],
             'login/success' => [
                 'GET' => [
                     'controller' => $loginController,
