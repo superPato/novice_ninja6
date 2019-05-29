@@ -53,7 +53,10 @@ class Login
 
 	public function logout()
 	{
-		unset($_SESSION);
+		unset($_SESSION['username']);
+		unset($_SESSION['password']);
+		session_regenerate_id();
+		
 		return [
 			'template' => 'logout.html.php',
 			'title'    => 'You have been logged out'
