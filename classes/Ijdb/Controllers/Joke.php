@@ -39,7 +39,8 @@ class Joke {
                 'joketext' => $joke['joketext'],
                 'jokedate' => $joke['jokedate'],
                 'name'     => $author['name'],
-                'email'    => $author['email']
+                'email'    => $author['email'],
+                'authorid' => $author['id']
             ];
         }
 
@@ -47,18 +48,28 @@ class Joke {
 
         $totalJokes = $this->jokesTable->total();
 
+        $author = $this->authentication->getUser();
+
         return [
             'template' => 'jokes.html.php',
             'title' => $title,
             'variables' => [
                 'totalJokes' => $totalJokes,
                 'jokes' => $jokes,
+                'userid' => $author['id'] ?? null
             ]
         ];
     }
 
     public function delete()
     {
+        $author = $this->authentication->getUser();
+        $joke = $this->jokesTable->findById($_POST['id']);
+
+        if ($joke['authorid'] != $author['id']) {
+            return;
+        }
+
         $this->jokesTable->delete($_POST['id']);
 
         header('location: /joke/list');
@@ -67,6 +78,14 @@ class Joke {
     public function saveEdit()
     {
         $author = $this->authentication->getUser();
+
+        if (isset($_GET['id'])) {
+            $joke = $this->jokesTable->findById($_GET['id']);
+
+            if ($joke['authorid'] != $author['id']) {
+                return;
+            }
+        }
 
         $joke = $_POST['joke'];
         $joke['authorid'] = $author['id'];
@@ -79,6 +98,8 @@ class Joke {
 
     public function edit()
     {
+        $author = $this->authentication->getUser();
+
         if (isset($_GET['id'])) {
             $joke = $this->jokesTable->findById($_GET['id']);
         }
@@ -90,6 +111,7 @@ class Joke {
             'title' => $title,
             'variables' => [
                 'joke' => $joke ?? null,
+                'userid' => $author['id'] ?? null
             ]
         ];
     }
