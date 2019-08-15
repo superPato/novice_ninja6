@@ -2,6 +2,7 @@
 
 namespace Ijdb\Controllers;
 
+use Ijdb\Entity\Author;
 use \Ninja\Authentication;
 use \Ninja\DatabaseTable;
 
@@ -87,11 +88,17 @@ class Joke {
             }
         }
 
+        $authorObject = new Author($this->jokesTable);
+
+        $authorObject->id = $author['id'];
+        $authorObject->name = $author['name'];
+        $authorObject->email = $author['email'];
+        $authorObject->password = $author['password'];
+
         $joke = $_POST['joke'];
-        $joke['authorid'] = $author['id'];
         $joke['jokedate'] = new \DateTime();
 
-        $this->jokesTable->save($joke);
+        $authorObject->addJoke($joke);
 
         header('location: /joke/list');
     }
