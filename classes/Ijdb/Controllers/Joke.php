@@ -32,15 +32,15 @@ class Joke {
 
         $jokes = [];
         foreach ($result as $joke) {
-            $author = $this->authorsTable->findById($joke['authorid']);
+            $author = $this->authorsTable->findById($joke->authorid);
 
             $jokes[] = [
-                'id'       => $joke['id'],
-                'joketext' => $joke['joketext'],
-                'jokedate' => $joke['jokedate'],
-                'name'     => $author['name'],
-                'email'    => $author['email'],
-                'authorid' => $author['id']
+                'id'       => $joke->id,
+                'joketext' => $joke->joketext,
+                'jokedate' => $joke->jokedate,
+                'name'     => $author->name,
+                'email'    => $author->email,
+                'authorid' => $author->id
             ];
         }
 
@@ -56,7 +56,7 @@ class Joke {
             'variables' => [
                 'totalJokes' => $totalJokes,
                 'jokes' => $jokes,
-                'userid' => $author['id'] ?? null
+                'userid' => $author->id ?? null
             ]
         ];
     }
@@ -66,7 +66,7 @@ class Joke {
         $author = $this->authentication->getUser();
         $joke = $this->jokesTable->findById($_POST['id']);
 
-        if ($joke['authorid'] != $author['id']) {
+        if ($joke['authorid'] != $author->id) {
             return;
         }
 
@@ -82,7 +82,7 @@ class Joke {
         if (isset($_GET['id'])) {
             $joke = $this->jokesTable->findById($_GET['id']);
 
-            if ($joke['authorid'] != $author['id']) {
+            if ($joke->authorid != $author->id) {
                 return;
             }
         }
