@@ -18,8 +18,8 @@ class IjdbRoutes implements \Ninja\Routes
     {
         include __DIR__ . '/../../includes/DatabaseConnection.php';
 
-        $this->jokesTable     = new DatabaseTable($pdo, 'joke', 'id');
-        $this->authorsTable   = new DatabaseTable($pdo, 'author', 'id', \Ijdb\Entity\Author::class, [$this->jokesTable]);
+        $this->jokesTable     = new DatabaseTable($pdo, 'joke', 'id', \Ijdb\Entity\Joke::class, [&$this->authorsTable]);
+        $this->authorsTable   = new DatabaseTable($pdo, 'author', 'id', \Ijdb\Entity\Author::class, [&$this->jokesTable]);
         $this->authentication = new Authentication($this->authorsTable, 'email', 'password');
     }
 
