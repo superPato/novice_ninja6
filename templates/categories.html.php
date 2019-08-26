@@ -9,7 +9,7 @@
 
         <a href="/category/edit?id=<?= $category->id ?>">Edit</a>
 
-        <form action="/category/delele" method="post">
+        <form action="/category/delete" method="post">
             <input type="hidden" name="id" value="<?= $category->id ?>">
             <input type="submit" value="Delete">
         </form>

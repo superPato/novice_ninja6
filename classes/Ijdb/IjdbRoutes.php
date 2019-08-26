@@ -98,6 +98,13 @@ class IjdbRoutes implements \Ninja\Routes
                 ],
                 'login' => true
             ],
+            'category/delete' => [
+                'POST' => [
+                    'controller' => $categoryController,
+                    'action' => 'delete'
+                ],
+                'login' => true
+            ],
             'login' => [
                 'GET' => [
                     'controller' => $loginController,
