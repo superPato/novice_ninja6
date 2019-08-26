@@ -7,6 +7,7 @@ class Joke {
 	public $jokedate;
 	public $joketext;
 	private $authorsTable;
+	private $author;
 
 	public function __construct(\Ninja\DatabaseTable $authorsTable)
 	{
@@ -15,6 +16,10 @@ class Joke {
 
 	public function getAuthor()
 	{
-		return $this->authorsTable->findById($this->authorid);
+	    if (empty($this->author)) {
+            $this->author = $this->authorsTable->findById($this->authorid);
+        }
+
+	    return $this->author;
 	}
 }
