@@ -8,14 +8,17 @@ use \Ninja\DatabaseTable;
 class Joke {
     private $authentication;
     private $authorsTable;
+    private $categoriesTable;
     private $jokesTable;
 
     public function __construct(DatabaseTable $jokesTable,
                                 DatabaseTable $authorsTable,
+                                DatabaseTable $categoriesTable,
                                 Authentication $authentication)
     {
         $this->jokesTable = $jokesTable;
         $this->authorsTable = $authorsTable;
+        $this->categoriesTable = $categoriesTable;
         $this->authentication = $authentication;
     }
 
@@ -84,6 +87,7 @@ class Joke {
     public function edit()
     {
         $author = $this->authentication->getUser();
+        $categories = $this->categoriesTable->findAll();
 
         if (isset($_GET['id'])) {
             $joke = $this->jokesTable->findById($_GET['id']);
@@ -96,7 +100,8 @@ class Joke {
             'title' => $title,
             'variables' => [
                 'joke' => $joke ?? null,
-                'userid' => $author->id ?? null
+                'userid' => $author->id ?? null,
+                'categories' => $categories
             ]
         ];
     }
