@@ -1,28 +1,40 @@
-<p><?= $totalJokes ?> jokes have been submitted to the Internet Joke Database.</p>
+<div class="jokelist">
+    <div class="categories">
+        <?php foreach ($categories as $category): ?>
+        <li>
+            <a href="/joke/list?category=<?= $category->id ?>"><?= $category->name ?></a>
+        </li>
+        <?php endforeach; ?>
+    </div>
 
-<?php foreach ($jokes as $joke): ?>
-<blockquote>
-    <p>
-        <?= htmlspecialchars($joke->joketext, ENT_QUOTES, 'UTF-8') ?>
+    <div class="jokes">
+        <p><?= $totalJokes ?> jokes have been submitted to the Internet Joke Database.</p>
 
-        (by <a href="mailto:<?php echo htmlspecialchars($joke->getAuthor()->email, ENT_QUOTES, 'UTF-8'); ?>">
-            <?php echo htmlspecialchars($joke->getAuthor()->name, ENT_QUOTES, 'UTF-8'); ?>
-        </a> on
-        <?php $date = new DateTime($joke->jokedate);
-            echo $date->format('jS F Y');
-        ?>)
+        <?php foreach ($jokes as $joke): ?>
+        <blockquote>
+            <p>
+                <?= htmlspecialchars($joke->joketext, ENT_QUOTES, 'UTF-8') ?>
 
-        <?php if ($userid == $joke->authorid): ?>
-            
-        <a href="/joke/edit?id=<?= $joke->id ?>">Edit</a>
+                (by <a href="mailto:<?php echo htmlspecialchars($joke->getAuthor()->email, ENT_QUOTES, 'UTF-8'); ?>">
+                    <?php echo htmlspecialchars($joke->getAuthor()->name, ENT_QUOTES, 'UTF-8'); ?>
+                </a> on
+                <?php $date = new DateTime($joke->jokedate);
+                    echo $date->format('jS F Y');
+                ?>)
 
-        <form action="/joke/delete" method="POST">
-            <input type="hidden" name="id" value="<?= $joke->id ?>">
-            <input type="submit" value="Delete">
-        </form>
-        
-        <?php endif ?>
+                <?php if ($userid == $joke->authorid): ?>
 
-    </p>
-</blockquote>
-<?php endforeach; ?>
+                <a href="/joke/edit?id=<?= $joke->id ?>">Edit</a>
+
+                <form action="/joke/delete" method="POST">
+                    <input type="hidden" name="id" value="<?= $joke->id ?>">
+                    <input type="submit" value="Delete">
+                </form>
+
+                <?php endif ?>
+
+            </p>
+        </blockquote>
+        <?php endforeach; ?>
+    </div>
+</div>
