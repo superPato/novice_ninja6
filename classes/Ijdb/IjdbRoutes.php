@@ -14,15 +14,22 @@ class IjdbRoutes implements \Ninja\Routes
     private $authorsTable;
     private $jokesTable;
     private $categoriesTable;
+    private $jokeCategoriesTable;
     private $authentication;
 
     public function __construct()
     {
         include __DIR__ . '/../../includes/DatabaseConnection.php';
 
-        $this->jokesTable      = new DatabaseTable($pdo, 'joke', 'id', \Ijdb\Entity\Joke::class, [&$this->authorsTable]);
+        $this->jokesTable      = new DatabaseTable($pdo, 'joke', 'id',
+            \Ijdb\Entity\Joke::class, [
+                &$this->authorsTable,
+                &$this->jokeCategoriesTable
+            ]
+        );
         $this->authorsTable    = new DatabaseTable($pdo, 'author', 'id', \Ijdb\Entity\Author::class, [&$this->jokesTable]);
         $this->categoriesTable = new DatabaseTable($pdo, 'categories', 'id');
+        $this->jokeCategoriesTable = new DatabaseTable($pdo, 'jokecategory', 'categoryid');
         $this->authentication  = new Authentication($this->authorsTable, 'email', 'password');
     }
 
