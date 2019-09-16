@@ -28,7 +28,12 @@ class IjdbRoutes implements \Ninja\Routes
             ]
         );
         $this->authorsTable    = new DatabaseTable($pdo, 'author', 'id', \Ijdb\Entity\Author::class, [&$this->jokesTable]);
-        $this->categoriesTable = new DatabaseTable($pdo, 'categories', 'id');
+        $this->categoriesTable = new DatabaseTable($pdo, 'categories', 'id',
+            \Ijdb\Entity\Category::class, [
+                &$this->jokesTable,
+                &$this->jokeCategoriesTable,
+            ]
+        );
         $this->jokeCategoriesTable = new DatabaseTable($pdo, 'jokecategory', 'categoryid');
         $this->authentication  = new Authentication($this->authorsTable, 'email', 'password');
     }
