@@ -148,6 +148,17 @@ class DatabaseTable {
 		$this->query("DELETE FROM `{$this->table}` WHERE `{$this->primaryKey}` = :id", $parameters);
 	}
 
+	public function deleteWhere($column, $value)
+	{
+		$query = "DELETE FROM {$this->table} WHERE {$column} = :value";
+
+		$parameters = [
+			'value' => $value
+		];
+
+		$query = $this->query($query, $parameters);
+	}
+
 	private function processDates($fields)
 	{
 		foreach ($fields as $key => $value) {
