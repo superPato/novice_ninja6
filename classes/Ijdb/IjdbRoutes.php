@@ -106,21 +106,24 @@ class IjdbRoutes implements \Ninja\Routes
                     'controller' => $categoryController,
                     'action' => 'edit'
                 ],
-                'login' => true
+                'login' => true,
+                'permissions' => \Ijdb\Entity\Author::EDIT_CATEGORIES,
             ],
             'category/list' => [
                 'GET' => [
                     'controller' => $categoryController,
                     'action' => 'list'
                 ],
-                'login' => true
+                'login' => true,
+                'permissions' => \Ijdb\Entity\Author::LIST_CATEGORIES,
             ],
             'category/delete' => [
                 'POST' => [
                     'controller' => $categoryController,
                     'action' => 'delete'
                 ],
-                'login' => true
+                'login' => true,
+                'permissions' => \Ijdb\Entity\Author::REMOVE_CATEGORIES,
             ],
             'login' => [
                 'GET' => [
@@ -159,5 +162,16 @@ class IjdbRoutes implements \Ninja\Routes
     public function getAuthentication(): Authentication
     {
         return $this->authentication;
+    }
+
+    public function checkPermission($permission): bool
+    {
+        $user = $this->authentication->getUser();
+
+        if ($user && $user->hasPermission($permission)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
