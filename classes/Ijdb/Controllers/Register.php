@@ -13,6 +13,37 @@ class Register
 		$this->authorsTable = $authorsTable;
 	}
 
+	public function list()
+	{
+		$authors = $this->authorsTable->findAll();
+
+		return [
+			'template'  => 'authorlist.html.php',
+			'title'     => 'Author List',
+			'variables' => compact('authors'),
+		];
+	}
+
+	public function permissions()
+	{
+		$author = $this->authorsTable->findById($_GET['id']);
+
+		$reflected = new \ReflectionClass('\Ijdb\Entity\Author');
+		$constants = $reflected->getConstants();
+
+		print_r($constants);
+		die();
+
+		return [
+			'template'  => 'permissions.html.php',
+			'title'     => 'Edit Permissions',
+			'variables' => [
+				'author'      => $author,
+				'permissions' => $constants,
+			]
+		];
+	}
+
 	public function registerUser()
 	{
 		$author = $_POST['author'];
