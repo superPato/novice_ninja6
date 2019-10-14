@@ -31,9 +31,6 @@ class Register
 		$reflected = new \ReflectionClass('\Ijdb\Entity\Author');
 		$constants = $reflected->getConstants();
 
-		print_r($constants);
-		die();
-
 		return [
 			'template'  => 'permissions.html.php',
 			'title'     => 'Edit Permissions',
@@ -42,6 +39,18 @@ class Register
 				'permissions' => $constants,
 			]
 		];
+	}
+
+	public function savePermissions()
+	{
+		$author = [
+			'id' => $_GET['id'],
+			'permissions' => array_sum($_POST['permissions'] ?? [])
+		];
+
+		$this->authorsTable->save($author);
+
+		header('location: /author/list');
 	}
 
 	public function registerUser()
