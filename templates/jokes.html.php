@@ -22,16 +22,22 @@
                     echo $date->format('jS F Y');
                 ?>)
 
-                <?php if ($userid == $joke->authorid): ?>
+                <?php if ($user): ?>
 
+                <?php if ($user->id == $joke->authorid || 
+                          $user->hasPermission(\Ijdb\Entity\Author::EDIT_JOKES)): ?>
                 <a href="/joke/edit?id=<?= $joke->id ?>">Edit</a>
+                <?php endif; ?>
 
+                <?php if ($user->id == $joke->authorid || 
+                          $user->hasPermission(\Ijdb\Entity\Author::DELETE_JOKES)): ?>
                 <form action="/joke/delete" method="POST">
                     <input type="hidden" name="id" value="<?= $joke->id ?>">
                     <input type="submit" value="Delete">
                 </form>
-
                 <?php endif ?>
+
+                <?php endif; ?>
 
             </p>
         </blockquote>

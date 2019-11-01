@@ -30,7 +30,9 @@ class Author {
 
     public function addJoke($joke)
     {
-        $joke['authorid'] = $this->id;
+        $authorid = $this->jokesTable->findById($joke['id'])->authorid;
+        
+        $joke['authorid'] = $this->isAnotherAuthor($authorid) ? $authorid : $this->id;
 
         return $this->jokesTable->save($joke);
     }
@@ -38,5 +40,10 @@ class Author {
     public function hasPermission($permission)
     {
         return $this->permissions & $permission;
+    }
+
+    protected function isAnotherAuthor($id) 
+    {
+        return $this->id != $id;
     }
 }

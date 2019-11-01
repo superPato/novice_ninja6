@@ -50,7 +50,7 @@ class Joke {
             'variables' => [
                 'totalJokes' => $totalJokes,
                 'jokes' => $jokes,
-                'userid' => $author->id ?? null,
+                'user' => $author,
                 'categories' => $this->categoriesTable->findAll(),
             ]
         ];
@@ -61,7 +61,9 @@ class Joke {
         $author = $this->authentication->getUser();
         $joke = $this->jokesTable->findById($_POST['id']);
 
-        if ($joke['authorid'] != $author->id) {
+        if ($joke->authorid != $author->id && 
+            !$author->hasPermission(\Ijdb\Entity\Author::DELETE_JOKES)) 
+        {
             return;
         }
 
@@ -73,14 +75,6 @@ class Joke {
     public function saveEdit()
     {
         $author = $this->authentication->getUser();
-
-        if (isset($_GET['id'])) {
-            $joke = $this->jokesTable->findById($_GET['id']);
-
-            if ($joke->authorid != $author->id) {
-                return;
-            }
-        }
 
         $joke = $_POST['joke'];
         $joke['jokedate'] = new \DateTime();
@@ -112,7 +106,7 @@ class Joke {
             'title' => $title,
             'variables' => [
                 'joke' => $joke ?? null,
-                'userid' => $author->id ?? null,
+                'user' => $author,
                 'categories' => $categories
             ]
         ];
