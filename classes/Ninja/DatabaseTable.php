@@ -46,9 +46,14 @@ class DatabaseTable {
 		return $query->fetchObject($this->className, $this->constructorArgs);
 	}
 
-	public function find($column, $value)
+	public function find($column, $value, $orderBy = null)
 	{
 		$query = "SELECT * FROM `{$this->table}` WHERE `{$column}` = :value";
+
+		if ($orderBy != null) {
+			$query .= " ORDER BY {$orderBy}";
+		}
+		
 		$query = $this->query($query, ['value' => $value]);
 
 		return $query->fetchAll(
@@ -58,9 +63,15 @@ class DatabaseTable {
 		);
 	}
 
-	public function findAll()
+	public function findAll($orderBy = null)
 	{
-		$result = $this->query("SELECT * FROM `{$this->table}`");
+		$query = "SELECT * FROM `{$this->table}`";
+
+		if ($orderBy != null) {
+			$query .= " ORDER BY {$orderBy}";
+		}
+
+		$result = $this->query($query);
 
 		return $result->fetchAll(
 			\PDO::FETCH_CLASS, 
