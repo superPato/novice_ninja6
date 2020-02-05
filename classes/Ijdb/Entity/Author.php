@@ -30,9 +30,9 @@ class Author {
 
     public function addJoke($joke)
     {
-        $authorid = $this->jokesTable->findById($joke['id'])->authorid;
-        
-        $joke['authorid'] = $this->isAnotherAuthor($authorid) ? $authorid : $this->id;
+        $joke['authorid'] = $this->isEditingJoke($joke) 
+            ? $this->jokesTable->findById($joke['id'])->authorid 
+            : $this->id;
 
         return $this->jokesTable->save($joke);
     }
@@ -41,9 +41,9 @@ class Author {
     {
         return $this->permissions & $permission;
     }
-
-    protected function isAnotherAuthor($id) 
+    
+    protected function isEditingJoke($joke)
     {
-        return $this->id != $id;
+        return isset($joke['id']) && $joke['id'] != null;
     }
 }
