@@ -46,12 +46,20 @@ class DatabaseTable {
 		return $query->fetchObject($this->className, $this->constructorArgs);
 	}
 
-	public function find($column, $value, $orderBy = null)
+	public function find($column, $value, $orderBy = null, $limit = null, $offset = null)
 	{
 		$query = "SELECT * FROM `{$this->table}` WHERE `{$column}` = :value";
 
 		if ($orderBy != null) {
 			$query .= " ORDER BY {$orderBy}";
+		}
+
+		if ($limit != null) {
+			$query .= " LIMIT {$limit}";
+		}
+
+		if ($offset != null) {
+			$query .= " OFFSET {$offset}";
 		}
 		
 		$query = $this->query($query, ['value' => $value]);
@@ -63,12 +71,20 @@ class DatabaseTable {
 		);
 	}
 
-	public function findAll($orderBy = null)
+	public function findAll($orderBy = null, $limit = null, $offset = null)
 	{
 		$query = "SELECT * FROM `{$this->table}`";
 
 		if ($orderBy != null) {
 			$query .= " ORDER BY {$orderBy}";
+		}
+
+		if ($limit != null) {
+			$query .= " LIMIT {$limit}";
+		}
+
+		if ($offset != null) {
+			$query .= " OFFSET {$offset}";
 		}
 
 		$result = $this->query($query);
