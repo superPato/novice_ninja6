@@ -36,15 +36,14 @@ class Joke {
 
         if (isset($_GET['category'])) {
             $category = $this->categoriesTable->findById($_GET['category']);
-            $jokes = $category->getJokes();
+            $jokes = $category->getJokes(10, $offset);
+            $totalJokes = $category->getNumJokes();
         } else {
             $jokes = $this->jokesTable->findAll('jokedate DESC', 10, $offset);
+            $totalJokes = $this->jokesTable->total();
         }
 
         $title = 'Joke list';
-
-        $totalJokes = $this->jokesTable->total();
-
         $author = $this->authentication->getUser();
 
         return [
@@ -55,7 +54,8 @@ class Joke {
                 'jokes' => $jokes,
                 'user' => $author,
                 'categories' => $this->categoriesTable->findAll(),
-                'currentPage' => $page
+                'currentPage' => $page,
+                'categoryid' => $_GET['category'] ?? null
             ]
         ];
     }

@@ -1,11 +1,11 @@
 <div class="jokelist">
-    <div class="categories">
+    <ul class="categories">
         <?php foreach ($categories as $category): ?>
         <li>
             <a href="/joke/list?category=<?= $category->id ?>"><?= $category->name ?></a>
         </li>
         <?php endforeach; ?>
-    </div>
+    </ul>
 
     <div class="jokes">
         <p><?= $totalJokes ?> jokes have been submitted to the Internet Joke Database.</p>
@@ -14,13 +14,16 @@
         <blockquote>
             <?= (new \Ninja\Markdown($joke->joketext))->toHtml() ?>
 
+            <div class="author">
             (by <a href="mailto:<?php echo htmlspecialchars($joke->getAuthor()->email, ENT_QUOTES, 'UTF-8'); ?>">
                 <?php echo htmlspecialchars($joke->getAuthor()->name, ENT_QUOTES, 'UTF-8'); ?>
             </a> on
             <?php $date = new DateTime($joke->jokedate);
                 echo $date->format('jS F Y');
             ?>)
+            </div>
 
+            <div class="actions">
             <?php if ($user): ?>
 
                 <?php if ($user->id == $joke->authorid || 
@@ -37,6 +40,7 @@
                 <?php endif ?>
 
             <?php endif; ?>
+            </div>
         </blockquote>
         <?php endforeach; ?>
 
@@ -51,7 +55,7 @@
         ?>
         
         <a class="<?= ($i != $currentPage) ?: 'currentpage' ?>" 
-           href="/joke/list?page=<?= $i ?>">
+           href="/joke/list?page=<?= $i ?><?= !empty($categoryid) ? '&category=' . $categoryid : '' ?>">
             <?= $i ?>
         </a>
         

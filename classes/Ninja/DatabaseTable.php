@@ -29,9 +29,17 @@ class DatabaseTable {
 		return $query;
 	}
 
-	public function total()
+	public function total($field = null, $value = null)
 	{
-	    $query = $this->query("SELECT COUNT(*) FROM `{$this->table}`");
+		$sql = "SELECT COUNT(*) FROM `{$this->table}`";
+		$parameters = [];
+
+		if (!empty($field)) {
+			$sql .= " WHERE `{$field}` = :value";
+			$parameters = ['value' => $value];
+		}
+
+	    $query = $this->query($sql, $parameters);
 	    $row = $query->fetch();
 
 	    return $row[0];
